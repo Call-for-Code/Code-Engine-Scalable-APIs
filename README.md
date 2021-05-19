@@ -49,16 +49,16 @@ git clone https://github.com/krook/code-engine-scalable-apis
 ### Set up an IBM Cloud resource group and project
 
 ```bash
-# Log in with your standard account, can't be a Lite account
+# Log in with your standard account if not using the Cloud Shell, can't be a Lite account
 ibmcloud login
 
 # Create a resource group for your projects, or reuse an existing one
 ibmcloud resource group-create call-for-code
 ibmcloud target -g call-for-code
 
-# Create a project for your applications, and a registry to stor images
+# Create a project for your applications, and a registry entry for the place to store images
 ibmcloud ce project create --name scalable-apis
-ibmcloud ce registry create --name call-for-code
+ibmcloud ce registry create --name call-for-code --username iamapikey --password API_KEY
 ```
 
 ## 2. Create Code Engine apps
@@ -67,15 +67,17 @@ ibmcloud ce registry create --name call-for-code
 
 ```bash
 # Change to the post-cat directory
-cd post-cat
+cd code-engine-scalable-apis/post-cat
 
-# Build the image
-docker build --no-cache -t call-for-code/post-cat .
+# Build the image. Make sure the Docker daemon is running.
+docker build --no-cache -t us.icr.io/call-for-code/post-cat .
 
 # And push it
-docker push call-for-code/post-cat
+ibmcloud cr login
+docker push us.icr.io/call-for-code/post-cat
 
 # Create the app
+ibmcloud ce project select --name scalable-apis
 ibmcloud ce application create --name post-cat --image call-for-code/post-cat
 
 # Get the URL of the app for later use
@@ -86,7 +88,7 @@ URL=$(ibmcloud ce application get --name post-cat --output url)
 
 ```bash
 # Change to the get-cat directory
-cd get-cat
+cd ../code-engine-scalable-apis/get-cat
 
 # Build the image
 docker build --no-cache -t call-for-code/get-cat .
