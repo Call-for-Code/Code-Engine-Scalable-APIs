@@ -64,6 +64,7 @@ ibmcloud ce registry create --name dockerhub \
          --server https://index.docker.io/v1/ 
          --username $DOCKERHUB_USERNAME \
          --password $DOCKERHUB_PASSWORD
+ibmcloud ce project select --name scalable-apis
 ```
 
 ## 2. Create Code Engine apps
@@ -81,7 +82,6 @@ docker build --no-cache -t $DOCKERHUB_USERNAME/post-cat .
 docker push $DOCKERHUB_USERNAME/post-cat
 
 # Create the app
-ibmcloud ce project select --name scalable-apis
 ibmcloud ce application create --name post-cat --image $DOCKERHUB_USERNAME/post-cat
 
 # Get the URL of the app for later use
@@ -113,7 +113,8 @@ Using `curl` we can now send HTTP requests to the REST APIs.
 
 ```bash
 # POST /v1/cat {"name": "Tahoma", "color": "Tabby"}
-curl -X POST -H 'Content-Type: application/json' -d '{"name": "Tahoma", "color": "Tabby"}' $POST_URL
+curl -X POST -H 'Content-Type: application/json' \
+             -d '{"name": "Tahoma", "color": "Tabby"}' $POST_URL
 
 # GET /v1/cat?id=1
 curl $GET_URL
