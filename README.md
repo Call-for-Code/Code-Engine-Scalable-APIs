@@ -51,8 +51,8 @@ git clone https://github.com/krook/code-engine-scalable-apis
 ```bash
 # Log in with your standard account if not using the Cloud Shell, can't be a Lite account
 ibmcloud login
-export USERNAME=[YOUR DOCKERHUB USERNAME]
-export PASSWORD=[YOUR DOCKERHUB PASSWORD]
+export DOCKERHUB_USERNAME=[YOUR DOCKERHUB USERNAME]
+export DOCKERHUB_PASSWORD=[YOUR DOCKERHUB PASSWORD]
 
 # Create a resource group for your projects, or reuse an existing one
 ibmcloud resource group-create call-for-code
@@ -60,7 +60,10 @@ ibmcloud target -g call-for-code
 
 # Create a project for your applications, and a registry entry for the place to store images
 ibmcloud ce project create --name scalable-apis
-ibmcloud ce registry create --name dockerhub --server https://index.docker.io/v1/ --username $USERNAME --password $PASSWORD
+ibmcloud ce registry create --name dockerhub \
+         --server https://index.docker.io/v1/ 
+         --username $DOCKERHUB_USERNAME \
+         --password $DOCKERHUB_PASSWORD
 ```
 
 ## 2. Create Code Engine apps
@@ -72,14 +75,14 @@ ibmcloud ce registry create --name dockerhub --server https://index.docker.io/v1
 cd code-engine-scalable-apis/post-cat
 
 # Build the image. Make sure the Docker daemon is running.
-docker build --no-cache -t $USERNAME/post-cat .
+docker build --no-cache -t $DOCKERHUB_USERNAME/post-cat .
 
 # And push it
-docker push $USERNAME/post-cat
+docker push $DOCKERHUB_USERNAME/post-cat
 
 # Create the app
 ibmcloud ce project select --name scalable-apis
-ibmcloud ce application create --name post-cat --image $USERNAME/post-cat
+ibmcloud ce application create --name post-cat --image $DOCKERHUB_USERNAME/post-cat
 
 # Get the URL of the app for later use
 POST_URL=$(ibmcloud ce application get --name post-cat --output url)
@@ -92,13 +95,13 @@ POST_URL=$(ibmcloud ce application get --name post-cat --output url)
 cd ../get-cat
 
 # Build the image
-docker build --no-cache -t $USERNAME/get-cat .
+docker build --no-cache -t $DOCKERHUB_USERNAME/get-cat .
 
 # And push it
-docker push $USERNAME/get-cat
+docker push $DOCKERHUB_USERNAME/get-cat
 
 # Create the app
-ibmcloud ce application create --name get-cat --image $USERNAME/get-cat
+ibmcloud ce application create --name get-cat --image $DOCKERHUB_USERNAME/get-cat
 
 # Get the URL of the app for later use
 GET_URL=$(ibmcloud ce application get --name get-cat --output url)
