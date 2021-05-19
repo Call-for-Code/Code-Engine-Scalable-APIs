@@ -110,7 +110,7 @@ Using `curl` we can now send HTTP requests to the REST APIs.
 
 ```bash
 # POST /v1/cat {"name": "Tahoma", "color": "Tabby"}
-curl -X POST -H 'Content-Type: application/json' -d '{"name":"Tahoma", "color":"Tabby"}' $POST_URL
+curl -X POST -H 'Content-Type: application/json' -d '{"name": "Tahoma", "color": "Tabby"}' $POST_URL
 
 # GET /v1/cat?id=1
 curl $GET_URL
@@ -126,6 +126,7 @@ curl $GET_URL
 # Delete apps
 ibmcloud ce application delete --name get-cat --force
 ibmcloud ce application delete --name post-cat --force
+ibmcloud ce project delete --name scalable-apis --force
 ```
 
 ## License

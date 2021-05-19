@@ -9,7 +9,7 @@ http.createServer((request, response) => {
        headers,
        method,
        url,
-       body: {"name":"Tahoma", "color":"Tabby"}
+       body: {"name": "Tahoma", "color": "Tabby"}
      }
      response.write(JSON.stringify(responseBody))
      response.end()
