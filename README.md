@@ -51,6 +51,8 @@ git clone https://github.com/krook/code-engine-scalable-apis
 ```bash
 # Log in with your standard account if not using the Cloud Shell, can't be a Lite account
 ibmcloud login
+export USERNAME=[YOUR DOCKERHUB USERNAME]
+export PASSWORD=[YOUR DOCKERHUB PASSWORD]
 
 # Create a resource group for your projects, or reuse an existing one
 ibmcloud resource group-create call-for-code
@@ -58,7 +60,7 @@ ibmcloud target -g call-for-code
 
 # Create a project for your applications, and a registry entry for the place to store images
 ibmcloud ce project create --name scalable-apis
-ibmcloud ce registry create --name call-for-code --username iamapikey --password API_KEY
+ibmcloud ce registry create --name dockerhub --server https://index.docker.io/v1/ --username $USERNAME --password $PASSWORD
 ```
 
 ## 2. Create Code Engine apps
@@ -70,37 +72,36 @@ ibmcloud ce registry create --name call-for-code --username iamapikey --password
 cd code-engine-scalable-apis/post-cat
 
 # Build the image. Make sure the Docker daemon is running.
-docker build --no-cache -t us.icr.io/call-for-code/post-cat .
+docker build --no-cache -t $USERNAME/post-cat .
 
 # And push it
-ibmcloud cr login
-docker push us.icr.io/call-for-code/post-cat
+docker push $USERNAME/post-cat
 
 # Create the app
 ibmcloud ce project select --name scalable-apis
-ibmcloud ce application create --name post-cat --image call-for-code/post-cat
+ibmcloud ce application create --name post-cat --image $USERNAME/post-cat
 
 # Get the URL of the app for later use
-URL=$(ibmcloud ce application get --name post-cat --output url)
+POST_URL=$(ibmcloud ce application get --name post-cat --output url)
 ```
 
 ### Create an action to retrieve a cat entity
 
 ```bash
 # Change to the get-cat directory
-cd ../code-engine-scalable-apis/get-cat
+cd ../get-cat
 
 # Build the image
-docker build --no-cache -t call-for-code/get-cat .
+docker build --no-cache -t $USERNAME/get-cat .
 
 # And push it
-docker push call-for-code/get-cat
+docker push $USERNAME/get-cat
 
 # Create the app
-ibmcloud ce application create --name get-cat --image call-for-code/get-cat
+ibmcloud ce application create --name get-cat --image $USERNAME/get-cat
 
 # Get the URL of the app for later use
-URL=$(ibmcloud ce application get --name get-cat --output url)
+GET_URL=$(ibmcloud ce application get --name get-cat --output url)
 ```
 
 ## 3. Invoke the REST endpoints
@@ -109,10 +110,10 @@ Using `curl` we can now send HTTP requests to the REST APIs.
 
 ```bash
 # POST /v1/cat {"name": "Tahoma", "color": "Tabby"}
-curl -X POST -H 'Content-Type: application/json' -d '{"name":"Tahoma", "color":"Tabby"}' $URL
+curl -X POST -H 'Content-Type: application/json' -d '{"name":"Tahoma", "color":"Tabby"}' $POST_URL
 
 # GET /v1/cat?id=1
-curl $URL?id=1
+curl $GET_URL
 ```
 
 ## 4. View usage
@@ -123,8 +124,8 @@ curl $URL?id=1
 
 ```bash
 # Delete apps
-ibmcloud ce app delete --name get-cat --force
-ibmcloud ce app delete --name post-cat --force
+ibmcloud ce application delete --name get-cat --force
+ibmcloud ce application delete --name post-cat --force
 ```
 
 ## License
