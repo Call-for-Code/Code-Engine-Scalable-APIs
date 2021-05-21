@@ -64,6 +64,17 @@ ibmcloud ce registry create --name dockerhub \
 ibmcloud ce project select --name scalable-apis
 ```
 
+## 2. Create a backing data store with Cloudant
+
+```
+# Grab region
+export REGION=$(ibmcloud target | awk '/Region:/{ print $2 }')
+
+# Create an instance of Cloudant, if you don't have one
+ibmcloud resource service-instance-create cats-database \
+         cloudantnosqldb lite $REGION
+``
+
 ## 2. Create Code Engine apps
 
 ### Create an action to create a cat entity
@@ -80,6 +91,9 @@ docker push $DOCKERHUB_USERNAME/post-cat
 
 # Create the app
 ibmcloud ce application create --name post-cat --image $DOCKERHUB_USERNAME/post-cat
+
+# Bind the Cloudant service credentials to the app
+ibmcloud ce application bind --name post-cat --service-instance cats-database
 
 # Get the URL of the app for later use
 POST_URL=$(ibmcloud ce application get --name post-cat --output url)
@@ -99,6 +113,9 @@ docker push $DOCKERHUB_USERNAME/get-cat
 
 # Create the app
 ibmcloud ce application create --name get-cat --image $DOCKERHUB_USERNAME/get-cat
+
+# Bind the Cloudant service credentials to the app
+ibmcloud ce application bind --name post-cat --service-instance cats-database
 
 # Get the URL of the app for later use
 GET_URL=$(ibmcloud ce application get --name get-cat --output url)
@@ -128,6 +145,9 @@ curl $GET_URL
 ibmcloud ce application delete --name get-cat --force
 ibmcloud ce application delete --name post-cat --force
 ibmcloud ce project delete --name scalable-apis --force
+
+# Delete database
+ibmcloud resource service-instance-delete cats-database
 ```
 
 ## License
