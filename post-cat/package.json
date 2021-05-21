@@ -1,0 +1,13 @@
+{
+  "name": "post-cat",
+  "version": "1.0.0",
+  "description": "Demo Code Engine POST handler",
+  "author": "Daniel Krook <krook@us.ibm.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@cloudant/cloudant": "^4.3.1"
+  }
+}

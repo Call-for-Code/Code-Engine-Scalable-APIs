@@ -4,9 +4,9 @@ const http = require('http');
 const Cloudant = require('@cloudant/cloudant');
 
 // Get account details from environment variables
-const url = process.env.cloudant_url;
-const username = process.env.cloudant_username;
-const password = process.env.cloudant_password;
+const url = process.env.CLOUDANTNOSQLDB_URL;
+const username = process.env.CLOUDANTNOSQLDB_USERNAME;
+const password = process.env.CLOUDANTNOSQLDB_PASSWORD;
 
 // Initialize the library with url and credentials.
 const cloudant = Cloudant({ url: url, username: username, password: password });
@@ -41,7 +41,7 @@ http.createServer((request, response) => {
         body: { 'error': 'Couldn\'t save to database' }
       }
     });
-    
+
     response.write(JSON.stringify(responseBody))
     response.end()
   }

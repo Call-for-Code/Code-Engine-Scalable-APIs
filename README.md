@@ -51,6 +51,7 @@ This repository has the source code for the applications we're going to deploy.
 
 ```bash
 git clone https://github.com/krook/code-engine-scalable-apis
+cd code-engine-scalable-apis
 ```
 
 ### Set up an IBM Cloud resource group and project
@@ -94,7 +95,7 @@ ibmcloud resource service-instances
 
 ```bash
 # Change to the post-cat directory
-cd code-engine-scalable-apis/post-cat
+cd post-cat
 
 # Build the image. Make sure the Docker daemon is running.
 docker build --no-cache -t $DOCKERHUB_USERNAME/post-cat .
@@ -128,7 +129,7 @@ docker push $DOCKERHUB_USERNAME/get-cat
 ibmcloud ce application create --name get-cat --image $DOCKERHUB_USERNAME/get-cat
 
 # Bind the Cloudant service credentials to the app
-ibmcloud ce application bind --name post-cat --service-instance cats-database
+ibmcloud ce application bind --name get-cat --service-instance cats-database
 
 # Get the URL of the app for later use
 GET_URL=$(ibmcloud ce application get --name get-cat --output url)
@@ -158,9 +159,11 @@ curl $GET_URL
 ibmcloud ce application delete --name get-cat --force
 ibmcloud ce application delete --name post-cat --force
 ibmcloud ce project delete --name scalable-apis --force --hard
+ibmcloud secret delete -n secret-ibm-cloud-operator --force  
+ibmcloud configmap delete -n config-ibm-cloud-operator --force
 
 # Delete database
-ibmcloud resource service-instance-delete cats-database
+ibmcloud resource service-instance-delete cats-database --force --recursive
 ```
 
 ## License
