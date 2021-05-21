@@ -2,9 +2,9 @@
 
 Demo for the Call for Code Code Engine hackathon. This example provides two REST endpoints for HTTP POST and GET methods that are mapped to corresponding create-cat and fetch-cat IBM Code Engine applications representing a RESTful API for a web or mobile backend. 
 
-By packaging each method independently, each method can scale independently. For example, an API is likely to receive many more requests to its `GET` method than its `DELETE` method. This sample shows `GET` and `POST` methods supported by a simple Node.js HTTP server.
+![Scalable APIs](scalable-apis.png)
 
-This demo doesn't show integration and auto-binding with backend data services, but you can learn more about how to do that in the [service documentation](https://cloud.ibm.com/docs/codeengine).
+By packaging each method independently, each method can scale independently. For example, an API is likely to receive many more requests to its `GET` method than its `DELETE` method. This sample shows `GET` and `POST` methods supported by a simple Node.js HTTP server.
 
 > Note: The Code Engine command line has shorthand for commands and parameter flags. This tutorial spells them out using the longer form for better readability. For example `application` vs `app` and `--name` vs `-n`.
 
