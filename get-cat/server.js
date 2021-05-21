@@ -45,7 +45,7 @@ http.createServer((request, response) => {
         url,
         body: { 'error': 'Couldn\'t find cat in database' }
       }
-      response.write(JSON.stringify(responseBody))
+      response.write(JSON.stringify(responseBody.body))
       response.end()
     });
   }
