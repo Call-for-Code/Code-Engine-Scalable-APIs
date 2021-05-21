@@ -1,10 +1,20 @@
 # Code Engine Scalable APIs
 
-Demo for the Call for Code Code Engine hackathon. This example provides two REST endpoints for HTTP POST and GET methods that are mapped to corresponding create-cat and fetch-cat IBM Code Engine applications representing a RESTful API for a web or mobile backend. 
+Demo for the Call for Code Code Engine hackathon. This example provides two REST endpoints for HTTP POST and GET methods that are mapped to corresponding create-cat and fetch-cat IBM Code Engine applications representing a RESTful API for a web or mobile backend.
 
-![Scalable APIs](scalable-apis.png)
+![Scalable APIs](img/scalable-apis.png)
 
 By packaging each method independently, each method can scale independently. For example, an API is likely to receive many more requests to its `GET` method than its `DELETE` method. This sample shows `GET` and `POST` methods supported by a simple Node.js HTTP server.
+
+## Benefits of scalable APIs
+
+![Scalable APIs](img/game.gif)
+
+## Benefits of scalable methods
+
+![Scalable APIs](img/conference.gif)
+
+## Getting started
 
 > Note: The Code Engine command line has shorthand for commands and parameter flags. This tutorial spells them out using the longer form for better readability. For example `application` vs `app` and `--name` vs `-n`.
 
@@ -58,7 +68,7 @@ ibmcloud target -g call-for-code
 # Create a project for your applications, and a registry entry for the place to store images
 ibmcloud ce project create --name scalable-apis
 ibmcloud ce registry create --name dockerhub \
-         --server https://index.docker.io/v1/ 
+         --server https://index.docker.io/v1/
          --username $DOCKERHUB_USERNAME \
          --password $DOCKERHUB_PASSWORD
 ibmcloud ce project select --name scalable-apis
@@ -66,7 +76,7 @@ ibmcloud ce project select --name scalable-apis
 
 ## 2. Create a backing data store with Cloudant
 
-```
+````
 # Grab region
 export REGION=$(ibmcloud target | awk '/Region:/{ print $2 }')
 
@@ -97,7 +107,7 @@ ibmcloud ce application bind --name post-cat --service-instance cats-database
 
 # Get the URL of the app for later use
 POST_URL=$(ibmcloud ce application get --name post-cat --output url)
-```
+````
 
 ### Create an action to retrieve a cat entity
 
