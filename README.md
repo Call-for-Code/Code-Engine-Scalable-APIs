@@ -67,23 +67,26 @@ ibmcloud target -g call-for-code
 
 # Create a project for your applications, and a registry entry for the place to store images
 ibmcloud ce project create --name scalable-apis
-ibmcloud ce registry create --name dockerhub \
-         --server https://index.docker.io/v1/
+ibmcloud ce registry create \
+         --name dockerhub \
+         --server https://index.docker.io/v1/ \
          --username $DOCKERHUB_USERNAME \
          --password $DOCKERHUB_PASSWORD
 ibmcloud ce project select --name scalable-apis
 ```
 
-## 2. Create a backing data store with Cloudant
+### Create a backing data store with Cloudant
 
-````
-# Grab region
-export REGION=$(ibmcloud target | awk '/Region:/{ print $2 }')
-
+```
 # Create an instance of Cloudant, if you don't have one
+# Set the region to something other than `us-south` if needed.
 ibmcloud resource service-instance-create cats-database \
-         cloudantnosqldb lite $REGION
-``
+         cloudantnosqldb lite us-south \
+         --parameters '{"legacyCredentials": false}'
+
+# Confirm that the project and service are up
+ibmcloud resource service-instances
+```
 
 ## 2. Create Code Engine apps
 
@@ -107,7 +110,7 @@ ibmcloud ce application bind --name post-cat --service-instance cats-database
 
 # Get the URL of the app for later use
 POST_URL=$(ibmcloud ce application get --name post-cat --output url)
-````
+```
 
 ### Create an action to retrieve a cat entity
 
@@ -154,7 +157,7 @@ curl $GET_URL
 # Delete apps
 ibmcloud ce application delete --name get-cat --force
 ibmcloud ce application delete --name post-cat --force
-ibmcloud ce project delete --name scalable-apis --force
+ibmcloud ce project delete --name scalable-apis --force --hard
 
 # Delete database
 ibmcloud resource service-instance-delete cats-database
