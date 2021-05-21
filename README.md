@@ -77,7 +77,7 @@ ibmcloud ce project select --name scalable-apis
 
 ### Create a backing data store with Cloudant
 
-```
+```bash
 # Create an instance of Cloudant, if you don't have one
 # Set the region to something other than `us-south` if needed.
 ibmcloud resource service-instance-create cats-database \
