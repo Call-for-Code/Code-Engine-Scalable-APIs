@@ -16,22 +16,11 @@ This demo doesn't show integration and auto-binding with backend data services, 
 
 ## 1. Set up Code Engine environment
 
-### Cloud Shell
+### Install or update your command line tools
 
-The easiest way to run these are via the
-[IBM Cloud Shell](https://cloud.ibm.com/shell) service. This is a browser based
-command line that will have all of the IBM Cloud CLI components pre-installed
-for you.
+> Note: We won't use the [IBM Cloud Shell](https://cloud.ibm.com/shell) service for this demo, as it doesn't include the Docker tool needed to build our images.
 
-To ensure you have the latest versions of each CLI plugin, run this in the shell:
-
-```bash
-ibmcloud plugin update --all --force
-```
-
-### Your own machine
-
-If you choose to use your own machine, then the following need to be installed:
+Download and install the following tools and plugins:
 
 - [IBM Cloud command line (`ibmcloud`)](https://cloud.ibm.com/docs/cli/reference/ibmcloud?topic=cloud-cli-getting-started)
 - [Code Engine plugin (`ce`)](https://cloud.ibm.com/codeengine/cli)
@@ -40,7 +29,15 @@ If you choose to use your own machine, then the following need to be installed:
 - [`docker`](https://docker.io/) if you choose to build the images yourself.
   For novices, skip this.
 
+If you installed those tools before, please ensure you have the latest versions of each plugin:
+
+```bash
+ibmcloud plugin update --all --force
+```
+
 ### Clone this repository
+
+This repository has the source code for the applications we're going to deploy.
 
 ```bash
 git clone https://github.com/krook/code-engine-scalable-apis
