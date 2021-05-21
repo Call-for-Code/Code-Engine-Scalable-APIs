@@ -3,17 +3,21 @@ const http = require('http');
 // Load the Cloudant library.
 const Cloudant = require('@cloudant/cloudant');
 
-// Get account details from environment variables
-const url = process.env.CLOUDANTNOSQLDB_URL;
-const username = process.env.CLOUDANTNOSQLDB_USERNAME;
-const password = process.env.CLOUDANTNOSQLDB_PASSWORD;
+// Test variables
+console.log(process.env);
 
-// Initialize the library with url and credentials.
-const cloudant = Cloudant({ url: url, username: username, password: password });
+// Get account details from environment variables
+const hostname = process.env.CLOUDANTNOSQLDB_URL || "";
+const username = process.env.CLOUDANTNOSQLDB_USERNAME || "";
+const password = process.env.CLOUDANTNOSQLDB_APIKEY || "";
 
 http.createServer((request, response) => {
   const { method, url, headers } = request
   if (method === 'POST' && url === '/') {
+
+    // Initialize the library with url and credentials.
+    const cloudant = Cloudant({ url: hostname, username: username, password: password });
+
     async function asyncCall() {
       await cloudant.db.create('cats');
       return cloudant.use('cats').insert({ 'name': 'Tahoma', 'color': 'Tabby' }, '1');
@@ -29,6 +33,8 @@ http.createServer((request, response) => {
         url,
         body: { 'id': 1 }
       }
+      response.write(JSON.stringify(responseBody))
+      response.end()
     }).catch((err) => {
       console.log(err);
       response.statusCode = 500
@@ -37,12 +43,11 @@ http.createServer((request, response) => {
         headers,
         method,
         url,
-        body: { 'error': 'Couldn\'t save to database' }
+        body: { 'error': 'Couldn\'t save cat to database' }
       }
+      response.write(JSON.stringify(responseBody))
+      response.end()
     });
-
-    response.write(JSON.stringify(responseBody))
-    response.end()
   }
 }).listen(8080);
 

@@ -21,7 +21,7 @@ By packaging each method independently, each method can scale independently. For
 1. [Set up Code Engine environment](#1-set-up-code-engine-environment)
 2. [Create Code Engine apps](#2-create-code-engine-apps)
 3. [Invoke the REST endpoints](#3-invoke-the-rest-endpoints)
-4. [View usage](#4-view-usage)
+4. [View logs](#4-view-logs)
 5. [Clean up](#5-clean-up)
 
 ## 1. Set up Code Engine environment
@@ -106,6 +106,9 @@ docker push $DOCKERHUB_USERNAME/post-cat
 # Create the app
 ibmcloud ce application create --name post-cat --image $DOCKERHUB_USERNAME/post-cat
 
+# Get app details, if needed
+ibmcloud ce application get --name post-cat
+
 # Bind the Cloudant service credentials to the app
 ibmcloud ce application bind --name post-cat --service-instance cats-database
 
@@ -128,6 +131,9 @@ docker push $DOCKERHUB_USERNAME/get-cat
 # Create the app
 ibmcloud ce application create --name get-cat --image $DOCKERHUB_USERNAME/get-cat
 
+# Get app details, if needed
+ibmcloud ce application get --name get-cat
+
 # Bind the Cloudant service credentials to the app
 ibmcloud ce application bind --name get-cat --service-instance cats-database
 
@@ -148,7 +154,25 @@ curl -X POST -H 'Content-Type: application/json' \
 curl $GET_URL
 ```
 
-## 4. View usage
+## 4. View logs
+
+You can now use a few other tools to view your application endpoints.
+
+You have two options:
+
+- Continue to use the [command line](https://cloud.ibm.com/docs/codeengine?topic=codeengine-cli)
+- Begin to use the [web user interface](https://cloud.ibm.com/codeengine/overview).
+
+For a quick look at logs and events, use this command:
+
+```bash
+ibmcloud ce application logs --name post-cat --tail 10
+ibmcloud ce application logs --name get-cat --tail 10
+```
+
+To dig into various parts of the application, including the logs:
+
+![Logging](img/logging.png)
 
 ## 5. Clean up
 
