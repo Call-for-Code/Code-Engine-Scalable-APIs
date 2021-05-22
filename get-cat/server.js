@@ -7,16 +7,15 @@ const Cloudant = require('@cloudant/cloudant');
 console.log(process.env);
 
 // Get account details from environment variables
-const hostname = process.env.CLOUDANTNOSQLDB_URL || "";
-const username = process.env.CLOUDANTNOSQLDB_USERNAME || "";
-const password = process.env.CLOUDANTNOSQLDB_APIKEY || "";
+const catsdb = process.env.CLOUDANTNOSQLDB_URL || "";
+const apikey = process.env.CLOUDANTNOSQLDB_APIKEY || "";
 
 http.createServer((request, response) => {
   const { method, url, headers } = request
   if (method === "GET" && url === "/") {
 
     // Initialize the library with url and credentials.
-    const cloudant = Cloudant({ url: hostname, username: username, password: password });
+    const cloudant = Cloudant({ url: catsdb, plugins: { iamauth: { iamApiKey: apikey } } });
 
     async function asyncCall() {
       await cloudant.db.create('cats');
