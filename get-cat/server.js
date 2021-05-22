@@ -33,7 +33,7 @@ http.createServer((request, response) => {
         url,
         body: data
       }
-      response.write(JSON.stringify(responseBody))
+      response.write(JSON.stringify(responseBody.body))
       response.end()
     }).catch((err) => {
       console.log(err);
