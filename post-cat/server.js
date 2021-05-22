@@ -45,7 +45,7 @@ http.createServer((request, response) => {
         url,
         body: { 'error': 'Couldn\'t save cat to database' }
       }
-      response.write(JSON.stringify(responseBody))
+      response.write(JSON.stringify(responseBody.body))
       response.end()
     });
   }

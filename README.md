@@ -1,10 +1,10 @@
 # Code Engine Scalable APIs
 
-Demo for the Call for Code Code Engine hackathon. This example provides two REST endpoints for HTTP POST and GET methods that are mapped to corresponding create-cat and fetch-cat IBM Code Engine applications representing a RESTful API for a web or mobile backend.
+Demo for the Call for Code Code Engine hackathon. This example provides two REST endpoints for HTTP POST and GET methods that are mapped to corresponding `post-cat` and `get-cat` IBM Code Engine applications representing a RESTful API for a web or mobile backend that implements the architecture below.
+
+By packaging each method independently, each method can scale independently. For example, an API is likely to receive many more requests to its `GET` method than its `DELETE` method. This sample shows `GET` and `POST` methods supported by a simple Node.js HTTP server that uses a Cloudant package to connect to a bound database.
 
 ![Scalable APIs](img/scalable-apis.png)
-
-By packaging each method independently, each method can scale independently. For example, an API is likely to receive many more requests to its `GET` method than its `DELETE` method. This sample shows `GET` and `POST` methods supported by a simple Node.js HTTP server.
 
 ## Benefits of scalable APIs
 
@@ -23,6 +23,7 @@ By packaging each method independently, each method can scale independently. For
 3. [Invoke the REST endpoints](#3-invoke-the-rest-endpoints)
 4. [View logs](#4-view-logs)
 5. [Clean up](#5-clean-up)
+6. [Learn more](#6-learn-more)
 
 ## 1. Set up Code Engine environment
 
@@ -34,12 +35,9 @@ Download and install the following tools and plugins:
 
 - [IBM Cloud command line (`ibmcloud`)](https://cloud.ibm.com/docs/cli/reference/ibmcloud?topic=cloud-cli-getting-started)
 - [Code Engine plugin (`ce`)](https://cloud.ibm.com/codeengine/cli)
-- [Cloud Object Storage plugin (`cos`)](https://cloud.ibm.com/docs/cloud-object-storage-cli-plugin)
-  for samples which use IBM Cloud Object Storage
-- [`docker`](https://docker.io/) if you choose to build the images yourself.
-  For novices, skip this.
+- [`docker`](https://docker.io/) for building images as well as pushing them to a Docker Hub namespace.
 
-If you installed those tools before, please ensure you have the latest versions of each plugin:
+If you installed the Code Engine plugin before, please make you have the latest versions:
 
 ```bash
 ibmcloud plugin update --all --force
@@ -80,7 +78,7 @@ ibmcloud ce project select --name scalable-apis
 
 ```bash
 # Create an instance of Cloudant, if you don't have one
-# Set the region to something other than `us-south` if needed.
+# Set the region to something other than `us-south` if needed
 ibmcloud resource service-instance-create cats-database \
          cloudantnosqldb lite us-south \
          --parameters '{"legacyCredentials": false}'
@@ -156,7 +154,7 @@ curl $GET_URL
 
 ## 4. View logs
 
-You can now use a few other tools to view your application endpoints.
+You can now use a few other tools to view your applications that represent your independent REST endpoints.
 
 You have two options:
 
@@ -183,12 +181,14 @@ To dig into various parts of the application, including the logs:
 ibmcloud ce application delete --name get-cat --force
 ibmcloud ce application delete --name post-cat --force
 ibmcloud ce project delete --name scalable-apis --force --hard
-ibmcloud secret delete -n secret-ibm-cloud-operator --force  
-ibmcloud configmap delete -n config-ibm-cloud-operator --force
 
 # Delete database
 ibmcloud resource service-instance-delete cats-database --force --recursive
 ```
+
+## 6. Learn more
+
+[Check out this repo of additional sample applications to explore other use cases](https://github.com/IBM/CodeEngine).
 
 ## License
 
