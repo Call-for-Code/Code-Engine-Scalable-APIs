@@ -2,7 +2,7 @@
 
 Demo for the Call for Code Code Engine hackathon. This example provides two REST endpoints for HTTP POST and GET methods that are mapped to corresponding `post-cat` and `get-cat` IBM Code Engine applications representing a RESTful API for a web or mobile backend that implements the architecture below.
 
-By packaging each method independently, each method can scale independently. For example, an API is likely to receive many more requests to its `GET` method than its `DELETE` method. This sample shows `GET` and `POST` methods supported by a simple Node.js HTTP server that uses a Cloudant package to connect to a bound database.
+By packaging each method independently, each method can scale on its own. For example, an API is likely to receive many more requests to its `GET` method than its `DELETE` method. This sample shows `GET` and `POST` methods supported by a simple Node.js HTTP server that uses a Cloudant package to connect to a bound database.
 
 ![Scalable APIs](img/scalable-apis.png)
 
@@ -48,8 +48,8 @@ ibmcloud plugin update --all --force
 This repository has the source code for the applications we're going to deploy.
 
 ```bash
-git clone https://github.com/krook/code-engine-scalable-apis
-cd code-engine-scalable-apis
+git clone https://github.com/Call-for-Code/Code-Engine-Scalable-APIs
+cd Code-Engine-Scalable-APIs
 ```
 
 ### Set up an IBM Cloud resource group and project
