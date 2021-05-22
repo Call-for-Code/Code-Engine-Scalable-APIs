@@ -22,8 +22,9 @@ http.createServer((request, response) => {
         await cloudant.db.create('cats');
       } catch(err) {
         // No op
+      } finally {
+        return cloudant.use('cats').insert({ _id: '12345', name: 'Tahoma', color: 'Tabby' });
       }
-      return cloudant.use('cats').insert({ _id: 1, name: 'Tahoma', color: 'Tabby' });
     }
 
     asyncCall().then((data) => {
@@ -34,7 +35,7 @@ http.createServer((request, response) => {
         headers,
         method,
         url,
-        body: { 'id': 1 }
+        body: { 'id': '12345' }
       }
       response.write(JSON.stringify(responseBody.body))
       response.end()
