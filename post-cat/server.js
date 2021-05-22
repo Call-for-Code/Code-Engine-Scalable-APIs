@@ -18,8 +18,12 @@ http.createServer((request, response) => {
     const cloudant = Cloudant({ url: catsdb, plugins: { iamauth: { iamApiKey: apikey } } });
 
     async function asyncCall() {
-      await cloudant.db.create('cats');
-      return cloudant.use('cats').insert({ 'name': 'Tahoma', 'color': 'Tabby' }, '1');
+      try {
+        await cloudant.db.create('cats');
+      } catch(err) {
+        // No op
+      }
+      return cloudant.use('cats').insert({ _id: 1, name: 'Tahoma', color: 'Tabby' });
     }
 
     asyncCall().then((data) => {
