@@ -55,7 +55,7 @@ cd code-engine-scalable-apis
 ### Set up an IBM Cloud resource group and project
 
 ```bash
-# Log in with your standard account if not using the Cloud Shell, can't be a Lite account
+# Log in with your standard account, can't be a Lite account
 ibmcloud login
 export DOCKERHUB_USERNAME=[YOUR DOCKERHUB USERNAME]
 export DOCKERHUB_PASSWORD=[YOUR DOCKERHUB PASSWORD]
